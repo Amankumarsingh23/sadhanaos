@@ -16,9 +16,9 @@ export function Skeleton({ className }: SkeletonProps) {
 }
 
 /* Preset skeletons for common layouts */
-export function SkeletonCard() {
+export function SkeletonCard({ className }: { className?: string }) {
   return (
-    <div className="rounded-card bg-parchment border border-sandstone p-5 space-y-3">
+    <div className={cn('rounded-card bg-parchment border border-sandstone p-5 space-y-3', className)}>
       <Skeleton className="h-5 w-2/3" />
       <Skeleton className="h-3 w-full" />
       <Skeleton className="h-3 w-4/5" />
