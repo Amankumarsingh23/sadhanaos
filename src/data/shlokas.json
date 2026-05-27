@@ -1,0 +1,22 @@
+[
+  {
+    "id": "bg-2-47",
+    "source": "Bhagavad Gita",
+    "chapter": "2",
+    "verse": "47",
+    "sanskrit": "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।\nमा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥",
+    "transliteration": "Karmanye vadhikaraste ma phaleshu kadachana\nMa karma-phala-hetur bhur ma te sango stv akarmani",
+    "english": "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself the cause of the results of your activities, and never be attached to not doing your duty.",
+    "tags": ["karma", "duty", "detachment"]
+  },
+  {
+    "id": "bg-9-22",
+    "source": "Bhagavad Gita",
+    "chapter": "9",
+    "verse": "22",
+    "sanskrit": "अनन्याश्चिन्तयन्तो मां ये जनाः पर्युपासते।\nतेषां नित्याभियुक्तानां योगक्षेमं वहाम्यहम्॥",
+    "transliteration": "Ananyash chintayanto mam ye janah paryupasate\ntesham nityabhiyuktanam yoga-ksemam vahamy aham",
+    "english": "For those who worship Me with devotion, meditating on My transcendental form, I carry what they lack and preserve what they have.",
+    "tags": ["devotion", "surrender", "grace"]
+  }
+]
