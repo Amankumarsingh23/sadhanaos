@@ -1,26 +1,211 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* =====================================================================
+   DAWN ASHRAM — SadhanaOS Global Design System
+   "The sacred stillness of Brahma Muhurta"
+   Like opening the doors of a temple at dawn.
+   ===================================================================== */
+
+/* ── Design Tokens (Tailwind v4 @theme) ─────────────────────────────── */
+@theme {
+  /* Backgrounds */
+  --color-dawn-white:     #FFF9F0;
+  --color-parchment:      #F5EDE0;
+  --color-sandstone:      #E8D5BE;
+
+  /* Saffron — primary accent (sannyasa, renunciation) */
+  --color-sacred-saffron: #E8913A;
+  --color-saffron-light:  #F2B366;
+  --color-saffron-deep:   #C47420;
+
+  /* Secondary accents */
+  --color-lotus-pink:     #D4838A;
+  --color-temple-gold:    #D4A847;
+
+  /* Indigo — night sky before dawn */
+  --color-indigo-deep:    #2B2D5B;
+  --color-indigo-mid:     #4A4C7A;
+  --color-twilight:       #6B6D9E;
+
+  /* Semantic */
+  --color-sage-green:     #7A9E7A;
+  --color-sky-blue:       #7AAEC4;
+  --color-warm-clay:      #C47C5A;
+  --color-rose-red:       #B85454;
+
+  /* Border radius — temple arch feel */
+  --radius-card:  1rem;
+  --radius-modal: 1.25rem;
+
+  /* Warm shadow palette */
+  --shadow-warm-sm: 0 1px 3px rgba(196,116,32,0.10), 0 1px 2px rgba(196,116,32,0.06);
+  --shadow-warm-md: 0 4px 6px rgba(196,116,32,0.10), 0 2px 4px rgba(196,116,32,0.06);
+  --shadow-warm-lg: 0 10px 15px rgba(196,116,32,0.10), 0 4px 6px rgba(196,116,32,0.06);
+  --shadow-warm-xl: 0 20px 25px rgba(196,116,32,0.10), 0 8px 10px rgba(196,116,32,0.06);
+  --shadow-saffron-glow: 0 0 20px rgba(232,145,58,0.40), 0 0 40px rgba(232,145,58,0.20);
+  --shadow-gold-glow: 0 0 20px rgba(212,168,71,0.40), 0 0 40px rgba(212,168,71,0.20);
 }
 
+/* Font references — Next.js injects these CSS vars via layout.tsx */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display:    var(--font-cormorant);
+  --font-body:       var(--font-source-serif);
+  --font-devanagari: var(--font-noto-devanagari);
+  --font-sans:       var(--font-geist-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Keyframe Animations ─────────────────────────────────────────────── */
+
+@keyframes flame-flicker {
+  0%,100% { transform: scaleX(1)    scaleY(1)    rotate(-1deg);  }
+  20%     { transform: scaleX(0.88) scaleY(1.06) rotate(1.2deg); }
+  40%     { transform: scaleX(1.10) scaleY(0.95) rotate(-0.8deg);}
+  60%     { transform: scaleX(0.92) scaleY(1.04) rotate(1.5deg); }
+  80%     { transform: scaleX(1.06) scaleY(0.98) rotate(-0.5deg);}
+}
+
+@keyframes flame-glow-pulse {
+  0%,100% { filter: drop-shadow(0 0  8px rgba(232,145,58,0.55)); }
+  50%     { filter: drop-shadow(0 0 18px rgba(232,145,58,0.85)); }
+}
+
+@keyframes gold-glow-pulse {
+  0%,100% { filter: drop-shadow(0 0 10px rgba(212,168,71,0.50)); }
+  50%     { filter: drop-shadow(0 0 22px rgba(212,168,71,0.90)); }
+}
+
+@keyframes warm-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes slide-up-fade {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes slide-down-fade {
+  from { opacity: 1; transform: translateY(0);    }
+  to   { opacity: 0; transform: translateY(12px); }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(100%) translateY(0); }
+  to   { opacity: 1; transform: translateX(0)    translateY(0); }
+}
+
+@keyframes breath-expand {
+  0%,100% { transform: scale(1);    opacity: 0.7; }
+  50%     { transform: scale(1.25); opacity: 1;   }
+}
+
+@keyframes sacred-spin {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Base Styles ─────────────────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-body, 'Source Serif 4', Georgia, serif);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FFF9F0; /* dawn-white */
+  /* Subtle warm radial gradient — like morning light on marble */
+  background-image: radial-gradient(
+    ellipse 80% 50% at 50% 0%,
+    rgba(242,179,102,0.08) 0%,
+    transparent 70%
+  );
+  background-attachment: fixed;
+  color: #2B2D5B; /* indigo-deep */
+  font-family: var(--font-body, 'Source Serif 4', Georgia, serif);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Selection ───────────────────────────────────────────────────────── */
+::selection {
+  background-color: rgba(242,179,102,0.35);
+  color: #2B2D5B;
+}
+::-moz-selection {
+  background-color: rgba(242,179,102,0.35);
+  color: #2B2D5B;
+}
+
+/* ── Custom Scrollbar ────────────────────────────────────────────────── */
+::-webkit-scrollbar              { width: 5px; height: 5px; }
+::-webkit-scrollbar-track        { background: #F5EDE0; }
+::-webkit-scrollbar-thumb        { background: #E8D5BE; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover  { background: #C47420; }
+
+/* ── Typography ──────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display, 'Cormorant Garamond', Georgia, serif);
+  color: #2B2D5B;
+}
+
+.font-devanagari,
+[lang="sa"],
+[lang="hi"] {
+  font-family: var(--font-devanagari, 'Noto Serif Devanagari', serif);
+}
+
+/* ── Utility classes ─────────────────────────────────────────────────── */
+
+.animate-flame-flicker {
+  animation: flame-flicker 1.8s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+
+.animate-flame-glow {
+  animation: flame-glow-pulse 2.2s ease-in-out infinite;
+}
+
+.animate-gold-glow {
+  animation: gold-glow-pulse 2.5s ease-in-out infinite;
+}
+
+.animate-warm-shimmer {
+  background: linear-gradient(
+    90deg,
+    #F5EDE0 0%,
+    #E8D5BE 30%,
+    #F5EDE0 50%,
+    #E8D5BE 70%,
+    #F5EDE0 100%
+  );
+  background-size: 200% 100%;
+  animation: warm-shimmer 1.8s linear infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up-fade 0.25s ease-out forwards;
+}
+
+.animate-toast-in {
+  animation: toast-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── Sacred background pattern ───────────────────────────────────────── */
+/* Subtle geometric lotus/mandala motif via SVG data URI */
+.bg-sacred-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23E8D5BE' stroke-width='0.5' opacity='0.6'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3Cline x1='10' y1='30' x2='50' y2='30'/%3E%3Cline x1='30' y1='10' x2='30' y2='50'/%3E%3Cline x1='15.9' y1='15.9' x2='44.1' y2='44.1'/%3E%3Cline x1='44.1' y1='15.9' x2='15.9' y2='44.1'/%3E%3Cellipse cx='30' cy='22' rx='4' ry='8' transform='rotate(0 30 30)'/%3E%3Cellipse cx='30' cy='22' rx='4' ry='8' transform='rotate(45 30 30)'/%3E%3Cellipse cx='30' cy='22' rx='4' ry='8' transform='rotate(90 30 30)'/%3E%3Cellipse cx='30' cy='22' rx='4' ry='8' transform='rotate(135 30 30)'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Card with lotus watermark overlay */
+.shlok-card-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23E8D5BE' stroke-width='0.8' opacity='0.25'%3E%3Ccircle cx='60' cy='60' r='40'/%3E%3Ccircle cx='60' cy='60' r='20'/%3E%3Ccircle cx='60' cy='60' r='5'/%3E%3Cellipse cx='60' cy='35' rx='8' ry='22' transform='rotate(0 60 60)'/%3E%3Cellipse cx='60' cy='35' rx='8' ry='22' transform='rotate(45 60 60)'/%3E%3Cellipse cx='60' cy='35' rx='8' ry='22' transform='rotate(90 60 60)'/%3E%3Cellipse cx='60' cy='35' rx='8' ry='22' transform='rotate(135 60 60)'/%3E%3Cellipse cx='60' cy='35' rx='8' ry='22' transform='rotate(180 60 60)'/%3E%3Cellipse cx='60' cy='35' rx='8' ry='22' transform='rotate(225 60 60)'/%3E%3Cellipse cx='60' cy='35' rx='8' ry='22' transform='rotate(270 60 60)'/%3E%3Cellipse cx='60' cy='35' rx='8' ry='22' transform='rotate(315 60 60)'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right -20px bottom -20px;
+  background-size: 140px;
+  pointer-events: none;
+  border-radius: inherit;
 }
