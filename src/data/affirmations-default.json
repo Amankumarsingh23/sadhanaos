@@ -1,0 +1,272 @@
+[
+  {
+    "id": "aff_001",
+    "text_hindi": "मैं आत्मा हूँ, शरीर नहीं।",
+    "text_english": "I am the Atman, not this body. The body is my instrument — I am the one who wields it.",
+    "source": "upanishad",
+    "source_ref": "Brihadaranyaka Upanishad — Aham Brahmasmi",
+    "category": "identity",
+    "active": true
+  },
+  {
+    "id": "aff_002",
+    "text_hindi": "मेरी ऊर्जा पवित्र है। मैं इसे ईश्वर को अर्पित करता हूँ।",
+    "text_english": "My vital energy is sacred. I offer it to the Divine. It rises as ojas, tejas, and virya.",
+    "source": "custom",
+    "source_ref": "Yoga Sutras 2.38 — brahmacharya-pratisthayam virya-labhah",
+    "category": "energy",
+    "active": true
+  },
+  {
+    "id": "aff_003",
+    "text_hindi": "जैसे अर्जुन ने अपने मन को जीता, मैं भी जीतूँगा।",
+    "text_english": "As Arjuna conquered his mind with Krishna's guidance, so shall I conquer mine — through practice and dispassion.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 6.35",
+    "category": "willpower",
+    "active": true
+  },
+  {
+    "id": "aff_004",
+    "text_hindi": "हर दिन मैं अपने उच्चतम स्वरूप के करीब हूँ।",
+    "text_english": "Every day I walk closer to my highest self. This is tapas — and tapas purifies.",
+    "source": "custom",
+    "source_ref": "Bhagavad Gita 17.14",
+    "category": "growth",
+    "active": true
+  },
+  {
+    "id": "aff_005",
+    "text_hindi": "ॐ भूर्भुवः स्वः। तत्सवितुर्वरेण्यं। भर्गो देवस्य धीमहि। धियो यो नः प्रचोदयात्।।",
+    "text_english": "O Divine Light of the Sun — illuminate my intellect. I meditate on your supreme radiance. Guide my thoughts toward truth.",
+    "source": "veda",
+    "source_ref": "Gayatri Mantra — Rigveda 3.62.10",
+    "category": "mantra",
+    "active": true
+  },
+  {
+    "id": "aff_006",
+    "text_hindi": "ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्। उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय माऽमृतात्।।",
+    "text_english": "I worship the three-eyed Lord who nourishes all beings. May He liberate me from the bondage of death as a cucumber is severed from its vine — never cutting me off from immortality.",
+    "source": "veda",
+    "source_ref": "Mahamrityunjaya Mantra — Rigveda 7.59.12",
+    "category": "mantra",
+    "active": true
+  },
+  {
+    "id": "aff_007",
+    "text_hindi": "मेरे पास कर्म करने का अधिकार है, फल की चिंता नहीं।",
+    "text_english": "I have the right to act with full sincerity. The outcome belongs to God. I act and release.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 2.47 — karmanye vadhikaraste",
+    "category": "detachment",
+    "active": true
+  },
+  {
+    "id": "aff_008",
+    "text_hindi": "मन चंचल है, पर मैं अभ्यास और वैराग्य से इसे वश में करूँगा।",
+    "text_english": "The mind is restless, but through practice and dispassion, I bring it under my will, not it under mine.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 6.35",
+    "category": "mind-mastery",
+    "active": true
+  },
+  {
+    "id": "aff_009",
+    "text_hindi": "इन्द्रियों के सुख क्षणिक हैं — वे दुःख के ही कारण हैं।",
+    "text_english": "Pleasures born of sense contact are wombs of suffering. I choose the lasting bliss of the inner Self over the brief pleasure of the senses.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 5.22 — ye hi samsparshaja bhoga duhkhayonaya eva te",
+    "category": "detachment",
+    "active": true
+  },
+  {
+    "id": "aff_010",
+    "text_hindi": "मैं उस योद्धा की तरह हूँ जो काम और क्रोध को जीतकर सच्ची शांति पाता है।",
+    "text_english": "I am the warrior who conquers kama and krodha — desire and anger — the twin enemies of the soul. In this victory lies true peace.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 5.23",
+    "category": "willpower",
+    "active": true
+  },
+  {
+    "id": "aff_011",
+    "text_hindi": "अहं ब्रह्मास्मि। मैं ब्रह्म हूँ — शुद्ध, अनंत, अपरिवर्तनीय।",
+    "text_english": "Aham Brahmasmi — I am Brahman. Pure, infinite, unchanging. This body is a vehicle; I am the eternal driver.",
+    "source": "upanishad",
+    "source_ref": "Brihadaranyaka Upanishad 1.4.10",
+    "category": "identity",
+    "active": true
+  },
+  {
+    "id": "aff_012",
+    "text_hindi": "ब्रह्मचर्य मेरी शक्ति है। यह मुझे तेज, ओजस और वीर्य देता है।",
+    "text_english": "Brahmacharya is my power. It builds in me ojas — the essential vital fluid — tejas, the inner brilliance, and virya, the life force.",
+    "source": "yoga_sutra",
+    "source_ref": "Yoga Sutras 2.38",
+    "category": "energy",
+    "active": true
+  },
+  {
+    "id": "aff_013",
+    "text_hindi": "मैं अपना सबसे अच्छा मित्र हूँ।",
+    "text_english": "I am my own best friend. The self alone is the friend of the self — and the enemy. Today, I choose to be my own friend.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 6.5-6",
+    "category": "self-reliance",
+    "active": true
+  },
+  {
+    "id": "aff_014",
+    "text_hindi": "असतो मा सद्गमय। तमसो मा ज्योतिर्गमय। मृत्योर्मा अमृतं गमय।",
+    "text_english": "Lead me from the unreal to the Real. From darkness to Light. From death to Immortality.",
+    "source": "upanishad",
+    "source_ref": "Brihadaranyaka Upanishad 1.3.28",
+    "category": "mantra",
+    "active": true
+  },
+  {
+    "id": "aff_015",
+    "text_hindi": "मेरे विचार शुद्ध हैं। मेरे कर्म शुद्ध हैं। मेरी ऊर्जा ऊपर उठ रही है।",
+    "text_english": "My thoughts are pure. My actions are pure. My energy rises upward with every choice I make today.",
+    "source": "custom",
+    "source_ref": "Yoga Sutras 2.41 — sattvashuddhi",
+    "category": "purity",
+    "active": true
+  },
+  {
+    "id": "aff_016",
+    "text_hindi": "जो होना है, वह होगा — मैं अपना धर्म निभाता हूँ।",
+    "text_english": "What must happen will happen. I focus only on what is in my hands — my effort, my sincerity, my dharma.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 2.47",
+    "category": "surrender",
+    "active": true
+  },
+  {
+    "id": "aff_017",
+    "text_hindi": "कामक्रोधोद्भवं वेगं मैं सह सकता हूँ। यही सच्चा सुख है।",
+    "text_english": "I can endure the impulse born of desire and anger before leaving this body. One who does this — he is the yogi, he is the happy one.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 5.23",
+    "category": "willpower",
+    "active": true
+  },
+  {
+    "id": "aff_018",
+    "text_hindi": "मेरी आत्मा न जन्मती है, न मरती है। मैं नित्य हूँ, शाश्वत हूँ।",
+    "text_english": "My soul is never born, never dies. It is eternal, imperishable. The body changes — I do not.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 2.20",
+    "category": "identity",
+    "active": true
+  },
+  {
+    "id": "aff_019",
+    "text_hindi": "ध्यान में मैं अपने सच्चे स्वरूप से मिलता हूँ।",
+    "text_english": "In meditation, I meet my truest self. The noise of the world falls away. What remains is the witness — pure, still, luminous.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 6.20-21",
+    "category": "meditation",
+    "active": true
+  },
+  {
+    "id": "aff_020",
+    "text_hindi": "सत्यमेव जयते। सत्य ही जीतता है।",
+    "text_english": "Truth alone triumphs. I walk the path of truth in my practice, my speech, my thoughts.",
+    "source": "upanishad",
+    "source_ref": "Mundaka Upanishad 3.1.6",
+    "category": "truth",
+    "active": true
+  },
+  {
+    "id": "aff_021",
+    "text_hindi": "मेरा मन शांत है, जैसे तूफान में दीपक।",
+    "text_english": "My mind is like a lamp in a windless place — steady, unflickering. No storm of sensation can extinguish this inner flame.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 6.19",
+    "category": "meditation",
+    "active": true
+  },
+  {
+    "id": "aff_022",
+    "text_hindi": "प्रत्येक उकसावे पर मैं श्वास लेता हूँ और ईश्वर को याद करता हूँ।",
+    "text_english": "Each time an urge arises, I pause, breathe, and remember the Divine. This pause is my power. This is pratyahara.",
+    "source": "yoga_sutra",
+    "source_ref": "Yoga Sutras 2.54 — pratyahara",
+    "category": "mind-mastery",
+    "active": true
+  },
+  {
+    "id": "aff_023",
+    "text_hindi": "तत् त्वम् असि। वह तुम हो।",
+    "text_english": "Tat tvam asi — That thou art. The infinite consciousness that runs this universe — that is what I am. How can anything lesser define me?",
+    "source": "upanishad",
+    "source_ref": "Chandogya Upanishad 6.8.7",
+    "category": "identity",
+    "active": true
+  },
+  {
+    "id": "aff_024",
+    "text_hindi": "अभ्यास और वैराग्य मेरे दो हथियार हैं।",
+    "text_english": "Abhyasa and vairagya — consistent practice and dispassion — are my two weapons. With these, even the restless mind is conquered.",
+    "source": "yoga_sutra",
+    "source_ref": "Yoga Sutras 1.12 — abhyasa-vairagyabhyam tan-nirodhah",
+    "category": "willpower",
+    "active": true
+  },
+  {
+    "id": "aff_025",
+    "text_hindi": "मैं राम का सेवक हूँ। राम के नाम में मेरी शक्ति है।",
+    "text_english": "I am a servant of Ram. In His name lives my strength, my courage, my clarity. Ram naam is my shield.",
+    "source": "ramcharitmanas",
+    "source_ref": "Ramcharitmanas — Sundara Kanda",
+    "category": "devotion",
+    "active": true
+  },
+  {
+    "id": "aff_026",
+    "text_hindi": "मैं दिव्य गुणों को धारण करता हूँ — निर्भयता, सत्य, दया, संयम।",
+    "text_english": "I embody the divine qualities — fearlessness, truth, compassion, self-restraint. These are my inheritance from the Gita 16.1-3.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 16.1-3 — daivi sampad",
+    "category": "character",
+    "active": true
+  },
+  {
+    "id": "aff_027",
+    "text_hindi": "मेरी इंद्रियाँ मेरे नियंत्रण में हैं, मैं उनके नियंत्रण में नहीं।",
+    "text_english": "My senses serve me; I do not serve them. I am the master of the chariot. The horses do not drive me.",
+    "source": "upanishad",
+    "source_ref": "Katha Upanishad 1.3.3-4 — chariot metaphor",
+    "category": "self-control",
+    "active": true
+  },
+  {
+    "id": "aff_028",
+    "text_hindi": "हर दिन का संघर्ष मुझे मजबूत बनाता है।",
+    "text_english": "Every day of this struggle forges me stronger. The fire of tapas does not burn — it purifies. I welcome the heat.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 17.14-16 — three types of tapas",
+    "category": "growth",
+    "active": true
+  },
+  {
+    "id": "aff_029",
+    "text_hindi": "मैं ईश्वर के हाथों में हूँ। वे मेरे योग और क्षेम दोनों वहन करते हैं।",
+    "text_english": "I am held in God's hands. He who worships with devotion — Krishna Himself carries their yoga (what they lack) and kshema (what they have). I am provided for.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 9.22 — yoga-ksemam vahamy aham",
+    "category": "surrender",
+    "active": true
+  },
+  {
+    "id": "aff_030",
+    "text_hindi": "सर्वधर्मान्परित्यज्य मामेकं शरणं व्रज। मैं शरण में हूँ।",
+    "text_english": "Abandoning all forms of dharma, I take refuge in You alone, O Lord. Free me from all sins — this is Krishna's promise. I claim it today.",
+    "source": "gita",
+    "source_ref": "Bhagavad Gita 18.66",
+    "category": "surrender",
+    "active": true
+  }
+]
