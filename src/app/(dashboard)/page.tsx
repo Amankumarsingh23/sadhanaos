@@ -1,12 +1,12 @@
-import { Header } from '@/components/layout/Header'
-
 export default function DashboardPage() {
   return (
-    <>
-      <Header title="Dashboard" subtitle="Your spiritual practice at a glance" />
-      <div className="p-6">
-        <p className="text-amber-700">Dashboard — coming soon</p>
+    <div className="space-y-6">
+      <div className="rounded-card bg-parchment border border-sandstone p-6">
+        <h2 className="font-display text-2xl font-semibold text-indigo-deep mb-1">
+          Gurukulam
+        </h2>
+        <p className="text-sm text-twilight">Your spiritual practice at a glance — coming soon.</p>
       </div>
-    </>
+    </div>
   )
 }

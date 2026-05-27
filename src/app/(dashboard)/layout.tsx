@@ -1,11 +1,5 @@
-import { Sidebar } from '@/components/layout/Sidebar'
-import { PageWrapper } from '@/components/layout/PageWrapper'
+import { ShellClient } from '@/components/layout/ShellClient'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <PageWrapper>{children}</PageWrapper>
-    </div>
-  )
+  return <ShellClient>{children}</ShellClient>
 }
