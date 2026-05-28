@@ -387,7 +387,7 @@ function ShlokDailyCard({ today }: { today: string }) {
           <RefreshCw className="w-3 h-3" /> Next shloka
         </button>
         <Link
-          href="/dashboard/granthalaya"
+          href="/granthalaya"
           className="flex items-center gap-1 text-xs text-twilight hover:text-indigo-deep font-medium transition-colors"
         >
           Study in library <ChevronRight className="w-3 h-3" />

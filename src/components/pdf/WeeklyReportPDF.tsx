@@ -1,34 +1,34 @@
 'use client'
 
 import {
-  Document, Page, Text, View, StyleSheet, Font,
-  Svg, Rect, Circle, Polygon, Line, G,
+  Document, Page, Text, View, Font,
+  Svg, Rect, Circle, Polygon, Line,
 } from '@react-pdf/renderer'
 import type { WeekCtx, ProfileCtx } from '@/lib/groq'
 import { getTheme } from './themes'
 
-// ─── Font Registration ────────────────────────────────────────────────────────
+// ─── Font Registration (WOFF for broadest @react-pdf compatibility) ───────────
 
 Font.register({
   family: 'Cinzel',
-  src: 'https://cdn.jsdelivr.net/npm/@fontsource/cinzel/files/cinzel-latin-400-normal.woff2',
+  src: 'https://cdn.jsdelivr.net/npm/@fontsource/cinzel/files/cinzel-latin-400-normal.woff',
 })
 
 Font.register({
   family: 'Cormorant',
   fonts: [
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-normal.woff2' },
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-italic.woff2', fontStyle: 'italic' },
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-600-normal.woff2', fontWeight: 600 },
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-700-normal.woff2', fontWeight: 700 },
+    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-normal.woff' },
+    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-italic.woff', fontStyle: 'italic' },
+    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-600-normal.woff', fontWeight: 600 },
+    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-700-normal.woff', fontWeight: 700 },
   ],
 })
 
 Font.register({
   family: 'Devanagari',
   fonts: [
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-devanagari/files/noto-serif-devanagari-devanagari-400-normal.woff2' },
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-devanagari/files/noto-serif-devanagari-devanagari-600-normal.woff2', fontWeight: 600 },
+    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-devanagari/files/noto-serif-devanagari-devanagari-400-normal.woff' },
+    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-devanagari/files/noto-serif-devanagari-devanagari-600-normal.woff', fontWeight: 600 },
   ],
 })
 
@@ -81,33 +81,33 @@ function GoldDivider({ gold, width = 515 }: { gold: string; width?: number }) {
 
 function WaxSeal({ gold, goldDark, size = 96 }: { gold: string; goldDark: string; size?: number }) {
   const c = size / 2
+  // Grain lines without G wrapper (draw individually at low opacity)
+  const grainLines = Array.from({ length: 6 }, (_, i) => {
+    const a = (i * Math.PI) / 6
+    return {
+      x1: c + (c * 0.3) * Math.cos(a), y1: c + (c * 0.3) * Math.sin(a),
+      x2: c + (c * 0.7) * Math.cos(a), y2: c + (c * 0.7) * Math.sin(a),
+    }
+  })
+
   return (
     <View style={{ width: size, height: size, position: 'relative' }}>
       <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        {/* Outer jagged wax */}
+        {/* Outer jagged wax edge */}
         <Polygon points={makeWaxPoints(c, c, 24)} fill={goldDark} />
-        {/* Mid layer */}
-        <Circle cx={c} cy={c} r={c * 0.8}  fill={gold} />
-        {/* Shine arc (top-left highlight) */}
-        <Circle cx={c} cy={c} r={c * 0.75} fill="#F5E680" fillOpacity={0.25} />
-        {/* Inner ring */}
+        {/* Main gold face */}
+        <Circle cx={c} cy={c} r={c * 0.80} fill={gold} />
+        {/* Highlight shimmer */}
+        <Circle cx={c} cy={c} r={c * 0.75} fill="#FFFACD" fillOpacity={0.18} />
+        {/* Inner ring engraving */}
         <Circle cx={c} cy={c} r={c * 0.72} fill="none" stroke={goldDark} strokeWidth={1.2} />
-        {/* Subtle grain lines for texture */}
-        <G opacity={0.12}>
-          {Array.from({ length: 6 }, (_, i) => {
-            const a = (i * Math.PI) / 6
-            return (
-              <Line
-                key={i}
-                x1={c + (c * 0.3) * Math.cos(a)} y1={c + (c * 0.3) * Math.sin(a)}
-                x2={c + (c * 0.7) * Math.cos(a)} y2={c + (c * 0.7) * Math.sin(a)}
-                stroke={goldDark} strokeWidth={1.5}
-              />
-            )
-          })}
-        </G>
+        {/* Grain lines for wax texture */}
+        {grainLines.map((l, i) => (
+          <Line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
+            stroke={goldDark} strokeWidth={1.2} strokeOpacity={0.1} />
+        ))}
       </Svg>
-      {/* OM overlay — absolute over SVG */}
+      {/* OM glyph centred over the seal */}
       <View style={{ position: 'absolute', top: 0, left: 0, width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{ fontFamily: 'Devanagari', fontSize: size * 0.36, color: goldDark, lineHeight: 1 }}>ॐ</Text>
       </View>

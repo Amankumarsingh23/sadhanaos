@@ -3,7 +3,13 @@
 import { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Info } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { supabase } from '@/lib/supabase'
+
+const PDFDownloadButton = dynamic(
+  () => import('@/components/pdf/PDFDownloadButton'),
+  { ssr: false, loading: () => null }
+)
 import {
   StreakTimelineChart,
   MoodTrendChart,
@@ -273,6 +279,10 @@ export default function AnalyticsPage() {
   const [reflections, setReflections] = useState<WeeklyRow[]>([])
   const [startDate,   setStartDate]   = useState<string | null>(null)
 
+  // PDF data
+  const [pdfProfile,  setPdfProfile]  = useState<{ name: string | null; deity: string | null; targetDays: number; currentStreak: number } | null>(null)
+  const [latestReport, setLatestReport] = useState<string | null>(null)
+
   useEffect(() => {
     ;(async () => {
       const { data: { user } } = await supabase.auth.getUser()
@@ -283,17 +293,28 @@ export default function AnalyticsPage() {
         { data: logs },
         { data: urges },
         { data: refl },
+        { data: streakRow },
+        { data: reports },
       ] = await Promise.all([
-        supabase.from('profiles').select('sadhana_start_date').eq('id', user.id).single(),
+        supabase.from('profiles').select('sadhana_start_date, full_name, ist_deity, target_days').eq('id', user.id).single(),
         supabase.from('daily_logs').select('*').eq('user_id', user.id).order('log_date'),
         supabase.from('urge_logs').select('*').eq('user_id', user.id).order('logged_at').limit(1000),
         supabase.from('weekly_reflections').select('*').eq('user_id', user.id).order('week_number'),
+        supabase.from('v_current_streak').select('current_streak').eq('user_id', user.id).maybeSingle(),
+        supabase.from('ai_reports').select('content').eq('user_id', user.id).eq('report_type', 'weekly').order('created_at', { ascending: false }).limit(1).maybeSingle(),
       ])
 
       setStartDate(profile?.sadhana_start_date ?? null)
       setDailyLogs(logs  ?? [])
       setUrgeLogs(urges   ?? [])
       setReflections(refl ?? [])
+      setPdfProfile({
+        name:          profile?.full_name ?? null,
+        deity:         profile?.ist_deity ?? null,
+        targetDays:    profile?.target_days ?? 90,
+        currentStreak: streakRow?.current_streak ?? 0,
+      })
+      setLatestReport(reports?.content ?? null)
       setLoading(false)
     })()
   }, [])
@@ -413,6 +434,52 @@ export default function AnalyticsPage() {
     [dailyLogs, urgeLogs]
   )
 
+  // ─── PDF props ────────────────────────────────────────────────────────────
+
+  const weekCtxForPDF = useMemo(() => {
+    const ago7    = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10)
+    const last7   = dailyLogs.filter((l) => l.log_date >= ago7)
+    const urges7  = urgeLogs.filter((u) => u.logged_at.slice(0, 10) >= ago7)
+    const moods   = last7.map((l) => l.mood_score).filter((v): v is number => v !== null)
+    const water   = last7.map((l) => l.water_glasses).filter((v) => v > 0)
+    const sleep   = last7.map((l) => l.sleep_hours).filter((v): v is number => v !== null)
+    return {
+      streakDays:     last7.filter((l) => l.streak_maintained).length,
+      avgMood:        moods.length ? moods.reduce((a, b) => a + b, 0) / moods.length : null,
+      meditationDays: last7.filter((l) => l.meditation_minutes > 0).length,
+      pranayamaDays:  last7.filter((l) => l.pranayama_done).length,
+      prayerDays:     last7.filter((l) => anyPrayerDone(l.prayers_completed)).length,
+      urgeCount:      urges7.length,
+      urgesResisted:  urges7.filter((u) => u.held_strong).length,
+      exerciseDays:   last7.filter((l) => l.exercise_done).length,
+      waterAvg:       water.length ? water.reduce((a, b) => a + b, 0) / water.length : 0,
+      sleepAvg:       sleep.length ? sleep.reduce((a, b) => a + b, 0) / sleep.length : null,
+      latestChallenge: null,
+      latestWin:      null,
+    }
+  }, [dailyLogs, urgeLogs])
+
+  const profileCtxForPDF = useMemo(() => {
+    if (!pdfProfile || !startDate) return null
+    const currentDay = Math.max(0, Math.floor((Date.now() - new Date(startDate).getTime()) / 86400000)) + 1
+    return {
+      name:          pdfProfile.name,
+      deity:         pdfProfile.deity,
+      sadhanaStart:  startDate,
+      targetDays:    pdfProfile.targetDays,
+      currentDay,
+      currentStreak: pdfProfile.currentStreak,
+    }
+  }, [pdfProfile, startDate])
+
+  const pdfWeekNumber = profileCtxForPDF ? Math.ceil(Math.max(1, profileCtxForPDF.currentDay) / 7) : 1
+  const pdfDateRange  = (() => {
+    const end   = new Date()
+    const start = new Date(end.getTime() - 6 * 86400000)
+    const fmt   = (d: Date) => d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
+    return `${fmt(start)} – ${fmt(end)}`
+  })()
+
   // ─── Render ───────────────────────────────────────────────────────────────
 
   const RANGE_OPTIONS: TimeRange[] = ['7D', '14D', '30D', 'All']
@@ -431,9 +498,27 @@ export default function AnalyticsPage() {
       {/* Sticky header */}
       <div className="sticky top-0 z-10 bg-parchment/90 backdrop-blur-md border-b border-sandstone">
         <div className="max-w-4xl mx-auto px-4 pt-5 pb-2 space-y-3">
-          <div>
-            <h1 className="font-devanagari text-2xl text-indigo-deep">दर्पण</h1>
-            <p className="text-xs text-twilight italic font-display">The Mirror of Your Sadhana</p>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h1 className="font-devanagari text-2xl text-indigo-deep">दर्पण</h1>
+              <p className="text-xs text-twilight italic font-display">The Mirror of Your Sadhana</p>
+            </div>
+            {!loading && profileCtxForPDF && latestReport && (
+              <div className="shrink-0">
+                <PDFDownloadButton
+                  profile={profileCtxForPDF}
+                  week={weekCtxForPDF}
+                  reportText={latestReport}
+                  weekNumber={pdfWeekNumber}
+                  dateRange={pdfDateRange}
+                />
+              </div>
+            )}
+            {!loading && profileCtxForPDF && !latestReport && (
+              <p className="text-xs text-twilight/60 italic self-center shrink-0">
+                Generate a Rishi report first to download PDF
+              </p>
+            )}
           </div>
           <div className="flex gap-1.5">
             {RANGE_OPTIONS.map((r) => (
