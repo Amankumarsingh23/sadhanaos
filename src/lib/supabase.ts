@@ -1,9 +1,8 @@
-import { createClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/ssr'
 import type { Database } from '@/types/database'
 
-const supabaseUrl     = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
-// ── Browser singleton ──────────────────────────────────────────────────────
-// Safe to import in Client Components. Uses localStorage for session.
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
+// Uses cookies (not localStorage) so the server proxy can read the session
+export const supabase = createBrowserClient<Database>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
