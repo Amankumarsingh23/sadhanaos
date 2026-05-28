@@ -65,6 +65,8 @@ export function RitualConsistencyChart({ days }: Props) {
             stackId="rituals"
             fill={r.color}
             fillOpacity={0.85}
+            animationDuration={900}
+            animationEasing="ease-out"
           />
         ))}
       </BarChart>

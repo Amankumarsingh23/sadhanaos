@@ -52,7 +52,7 @@ export function HolisticScoreChart({ weeks }: Props) {
             contentStyle={{ fontSize: 11, background: '#FDF8F0', border: '1px solid #E8D5BE', borderRadius: 8 }}
             formatter={(value: unknown) => [`${Number(value)}/100`, 'Sadhana Score']}
           />
-          <Bar dataKey="score" maxBarSize={36} radius={[4, 4, 0, 0]}>
+          <Bar dataKey="score" maxBarSize={36} radius={[4, 4, 0, 0]} animationDuration={1000} animationEasing="ease-out">
             <LabelList
               dataKey="grade"
               position="top"

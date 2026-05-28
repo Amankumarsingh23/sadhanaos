@@ -7,6 +7,7 @@ import {
   Activity, Check, ChevronRight, Quote, RefreshCw,
 } from 'lucide-react'
 import Link from 'next/link'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { DiyaFlame } from '@/components/sacred/DiyaFlame'
 import { ProgressRing } from '@/components/ui/ProgressRing'
 import { ShlokCard } from '@/components/sacred/ShlokCard'
@@ -625,13 +626,26 @@ export default function DashboardPage() {
 
   if (!profile) {
     return (
-      <div className="max-w-3xl mx-auto text-center py-16 space-y-4">
-        <p className="font-devanagari text-2xl text-indigo-deep">साधना अभी शुरू नहीं हुई</p>
-        <p className="text-twilight text-sm">Complete your onboarding to begin your journey.</p>
-        <Link href="/dashboard/onboarding">
-          <Button variant="primary">Begin Sadhana</Button>
-        </Link>
-      </div>
+      <EmptyState
+        icon="🪔"
+        title="Every great journey begins with a single step."
+        description="Complete your onboarding to light the diya and begin your sadhana."
+        ctaLabel="Begin Sadhana 🙏"
+        ctaHref="/onboarding"
+      />
+    )
+  }
+
+  // No logs yet — first day
+  if (weekLogs.length === 0 && !todayLog) {
+    return (
+      <EmptyState
+        icon="🌅"
+        title="Your first day of sadhana awaits."
+        description="Log your morning practice to begin tracking your transformation. Every master was once a beginner."
+        ctaLabel="Log Today's Practice"
+        ctaHref="/log"
+      />
     )
   }
 

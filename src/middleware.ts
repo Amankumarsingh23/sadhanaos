@@ -25,8 +25,14 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // Unauthenticated → protect all /dashboard routes
-  if (!user && pathname.startsWith('/dashboard')) {
+  // Protected routes — /dashboard and all app pages in the dashboard layout group
+  const PROTECTED = [
+    '/dashboard', '/log', '/urge-shield', '/dhyana', '/granthalaya',
+    '/prarthana', '/skincare', '/chintan', '/analytics', '/rishi',
+    '/goals', '/settings', '/onboarding',
+  ]
+  const isProtected = PROTECTED.some((p) => pathname === p || pathname.startsWith(p + '/'))
+  if (!user && isProtected) {
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('next', pathname)
     return NextResponse.redirect(loginUrl)

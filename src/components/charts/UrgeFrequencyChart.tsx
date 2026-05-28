@@ -54,7 +54,7 @@ export function UrgeFrequencyChart({ weeks }: Props) {
         />
         <Legend wrapperStyle={{ fontSize: 10 }} />
 
-        <Bar yAxisId="left" dataKey="count" name="Urges" maxBarSize={28} radius={[3, 3, 0, 0]}>
+        <Bar yAxisId="left" dataKey="count" name="Urges" maxBarSize={28} radius={[3, 3, 0, 0]} animationDuration={900} animationEasing="ease-out">
           {weeks.map((w, i) => (
             <Cell key={i} fill={intensityFill(w.avgIntensity)} />
           ))}
@@ -69,6 +69,8 @@ export function UrgeFrequencyChart({ weeks }: Props) {
           strokeWidth={2}
           dot={{ r: 3, fill: '#6B9E78', strokeWidth: 0 }}
           activeDot={{ r: 5 }}
+          animationDuration={1200}
+          animationEasing="ease-out"
         />
       </ComposedChart>
     </ResponsiveContainer>

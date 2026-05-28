@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { BookMarked } from 'lucide-react'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { supabase } from '@/lib/supabase'
 import { ShlokCard } from '@/components/sacred/ShlokCard'
 import {
@@ -71,6 +72,15 @@ export default function GranthalayaPage() {
           <BookMarked size={15} />
           View all bookmarks
         </Link>
+
+        {/* Empty state — first-time visitor */}
+        {!loading && Object.keys(studiedMap).length === 0 && (
+          <EmptyState
+            icon="📖"
+            title="Open a verse, begin your study. The Gita awaits."
+            description="Choose any scripture below to start your journey through the sacred texts."
+          />
+        )}
 
         {/* Scripture grid */}
         <section className="space-y-4">

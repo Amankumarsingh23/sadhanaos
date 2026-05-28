@@ -467,8 +467,20 @@ export default function AnalyticsPage() {
         ) : dailyLogs.length === 0 ? (
           <div className="text-center py-24 space-y-3">
             <p className="text-4xl">🪞</p>
-            <p className="font-display text-twilight">The mirror shows what you put into it.</p>
-            <p className="text-xs text-twilight/60">Start logging your daily sadhana to see analytics here.</p>
+            <p className="font-display text-xl text-indigo-deep">Your mirror is forming. Keep practicing.</p>
+            <p className="text-sm text-twilight/70">Every day you log builds the reflection. Start now — the mirror will show what you put into it.</p>
+          </div>
+        ) : dailyLogs.length < 7 ? (
+          <div className="space-y-4">
+            <div className="rounded-card border border-sandstone bg-parchment/60 p-6 text-center">
+              <p className="text-2xl mb-2">🌱</p>
+              <p className="font-display text-lg text-indigo-deep font-semibold">
+                Your mirror is forming. Keep practicing.
+              </p>
+              <p className="text-sm text-twilight mt-1">
+                {7 - dailyLogs.length} more days of logging will unlock full analytics.
+              </p>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

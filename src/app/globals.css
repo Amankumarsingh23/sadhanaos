@@ -191,6 +191,35 @@ h1, h2, h3, h4, h5, h6 {
   animation: toast-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
+/* ── Hover card lift ──────────────────────────────────────────────────── */
+/* Apply to any card that should lift on hover */
+.card-hover {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  will-change: transform;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(196,116,32,0.14), 0 2px 6px rgba(196,116,32,0.09);
+}
+.card-hover:active {
+  transform: translateY(0);
+}
+
+/* ── Scrollbar hide ───────────────────────────────────────────────────── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide                     { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Touch-friendly tap target ────────────────────────────────────────── */
+/* Minimum 44px touch target on mobile without changing visual size */
+.touch-target {
+  position: relative;
+}
+.touch-target::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+
 /* ── Sacred background pattern ───────────────────────────────────────── */
 /* Subtle geometric lotus/mandala motif via SVG data URI */
 .bg-sacred-pattern {

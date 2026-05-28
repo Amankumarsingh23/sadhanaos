@@ -63,6 +63,8 @@ export function MoodTrendChart({ data }: Props) {
           fillOpacity={0.35}
           radius={[2, 2, 0, 0]}
           maxBarSize={18}
+          animationDuration={800}
+          animationEasing="ease-out"
         />
 
         {/* Mood line — foreground */}
@@ -75,6 +77,8 @@ export function MoodTrendChart({ data }: Props) {
           dot={{ r: 3, fill: '#3D2C8D', strokeWidth: 0 }}
           activeDot={{ r: 5 }}
           connectNulls
+          animationDuration={1200}
+          animationEasing="ease-out"
         />
       </ComposedChart>
     </ResponsiveContainer>
