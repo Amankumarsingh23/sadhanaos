@@ -29,7 +29,7 @@ export async function proxy(request: NextRequest) {
   const PROTECTED = [
     '/dashboard', '/log', '/urge-shield', '/dhyana', '/granthalaya',
     '/prarthana', '/skincare', '/chintan', '/analytics', '/rishi',
-    '/goals', '/settings', '/onboarding',
+    '/goals', '/settings', '/onboarding', '/kavach',
   ]
   const isProtected = PROTECTED.some((p) => pathname === p || pathname.startsWith(p + '/'))
 

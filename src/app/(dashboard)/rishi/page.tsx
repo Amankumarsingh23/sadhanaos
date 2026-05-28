@@ -603,7 +603,7 @@ export default function RishiPage() {
                       {/* Quick links */}
                       <div className="grid grid-cols-2 gap-3">
                         <Link
-                          href="/pranayama"
+                          href="/dhyana"
                           className="rounded-card border border-sandstone bg-white/60 p-3 text-center hover:shadow-warm-sm transition-shadow"
                         >
                           <p className="text-lg">🌬️</p>
@@ -638,7 +638,7 @@ export default function RishiPage() {
                         <>
                           <div className="grid grid-cols-2 gap-3">
                             <Link
-                              href="/pranayama"
+                              href="/dhyana"
                               className="rounded-card border border-indigo-mid bg-indigo-mid/10 p-3 text-center hover:bg-indigo-mid/20 transition-colors"
                             >
                               <p className="text-lg">🌬️</p>
