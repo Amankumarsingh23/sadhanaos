@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { Header } from '@/components/layout/Header'
 import { BottomTabBar } from '@/components/layout/BottomTabBar'
+import { FeedbackWidget } from '@/components/ui/FeedbackWidget'
 import { ToastProvider } from '@/contexts/ToastContext'
 import { supabase } from '@/lib/supabase'
 import type { User } from '@supabase/supabase-js'
@@ -86,6 +87,7 @@ export function ShellClient({ children }: ShellClientProps) {
   const [authChecked,  setAuthChecked]  = useState(false)
   const [streak,       setStreak]       = useState(1)
   const [isActive,     setIsActive]     = useState(true)
+  const [deity,        setDeity]        = useState<string | null>(null)
   const [rishiFabOpen, setRishiFabOpen] = useState(false)
 
   // Hide FAB on Rishi page (already there)
@@ -109,17 +111,19 @@ export function ShellClient({ children }: ShellClientProps) {
     return () => subscription.unsubscribe()
   }, [router])
 
-  // ── Fetch streak ───────────────────────────────────────────────────────────
+  // ── Fetch streak + deity ───────────────────────────────────────────────────
   useEffect(() => {
     if (!user) return
     const today = new Date().toISOString().slice(0, 10)
     Promise.all([
       supabase.from('v_current_streak').select('current_streak').eq('user_id', user.id).maybeSingle(),
       supabase.from('daily_logs').select('streak_maintained').eq('user_id', user.id).eq('log_date', today).maybeSingle(),
-    ]).then(([{ data: streakData }, { data: logData }]) => {
+      supabase.from('profiles').select('ist_deity').eq('id', user.id).single(),
+    ]).then(([{ data: streakData }, { data: logData }, { data: profileData }]) => {
       const s = streakData?.current_streak ?? 1
       setStreak(s)
       setIsActive(logData?.streak_maintained ?? s > 0)
+      setDeity(profileData?.ist_deity ?? null)
     })
   }, [user])
 
@@ -163,6 +167,9 @@ export function ShellClient({ children }: ShellClientProps) {
       </div>
 
       <BottomTabBar />
+
+      {/* ── Feedback widget — bottom-left, always visible ──────────── */}
+      <FeedbackWidget userId={user.id} streak={streak} deity={deity} />
 
       {/* ── Floating Rishi FAB ─────────────────────────────────────── */}
       <AnimatePresence>
