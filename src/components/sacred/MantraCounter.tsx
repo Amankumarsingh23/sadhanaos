@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { RotateCcw } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -9,6 +9,7 @@ interface MantraCounterProps {
   mantra?: string
   target?: number
   className?: string
+  onMalaComplete?: () => void
 }
 
 const FULL_CIRCLE = 2 * Math.PI * 88  // circumference for r=88 (in the 200px SVG)
@@ -23,12 +24,22 @@ function buildDots(total: number): { cx: number; cy: number }[] {
   })
 }
 
-export function MantraCounter({ mantra = 'ॐ नमः शिवाय', target = 108, className }: MantraCounterProps) {
+export function MantraCounter({ mantra = 'ॐ नमः शिवाय', target = 108, className, onMalaComplete }: MantraCounterProps) {
   const [count, setCount] = useState(0)
   const [burst, setBurst] = useState(false)
   const dots = buildDots(target)
   const completed = Math.floor(count / target)
   const inCycle   = count % target
+
+  const onMalaRef  = useRef(onMalaComplete)
+  const prevMalas  = useRef(0)
+  useEffect(() => { onMalaRef.current = onMalaComplete }, [onMalaComplete])
+  useEffect(() => {
+    if (completed > prevMalas.current) {
+      prevMalas.current = completed
+      onMalaRef.current?.()
+    }
+  }, [completed])
 
   const increment = useCallback(() => {
     setCount((c) => {
