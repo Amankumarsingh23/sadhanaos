@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, ChevronUp, Send, AlertTriangle, Sparkles } from 'lucide-react'
 import Link from 'next/link'
@@ -154,7 +155,11 @@ function PastReportCard({ report }: { report: AiReport }) {
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function RishiPage() {
-  const [tab, setTab] = useState<Tab>('weekly')
+  const searchParams = useSearchParams()
+  const initialMode  = searchParams.get('mode') as Tab | null
+  const [tab, setTab] = useState<Tab>(
+    initialMode && ['weekly','ask','emergency'].includes(initialMode) ? initialMode : 'weekly'
+  )
 
   // Data
   const [userId,   setUserId]   = useState<string | null>(null)
