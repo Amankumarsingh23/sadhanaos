@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="#FFF9F0"/>
+  <!-- Subtle inner ring -->
+  <rect x="18" y="18" width="476" height="476" rx="80" fill="none" stroke="#E8913A" stroke-width="6" stroke-opacity="0.25"/>
+  <!-- OM symbol -->
+  <text
+    x="256"
+    y="368"
+    text-anchor="middle"
+    font-family="'Noto Serif Devanagari', 'Noto Sans Devanagari', 'Mangal', serif"
+    font-size="310"
+    font-weight="500"
+    fill="#E8913A"
+    letter-spacing="-4"
+  >ॐ</text>
+</svg>

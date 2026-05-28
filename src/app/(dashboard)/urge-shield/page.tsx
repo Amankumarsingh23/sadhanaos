@@ -434,7 +434,7 @@ export default function UrgeShieldPage() {
                     className="space-y-3"
                   >
                     <p className="text-sm font-medium text-sage-green">
-                      ✓ Feeling calmer? Let's document this urge.
+                      ✓ Feeling calmer? Let&apos;s document this urge.
                     </p>
                     <Button variant="primary" size="lg" onClick={handleBreathContinue} className="w-full">
                       Continue →
@@ -650,7 +650,7 @@ export default function UrgeShieldPage() {
 
               <div className="text-left space-y-2">
                 <p className="text-sm font-medium text-indigo-deep">
-                  Take a moment. Write what you're feeling.
+                  Take a moment. Write what you&apos;re feeling.
                 </p>
                 <Textarea
                   label="What's on your mind right now?"
@@ -673,7 +673,7 @@ export default function UrgeShieldPage() {
                   href="/log"
                   className="block text-center text-xs text-twilight hover:text-sacred-saffron transition-colors"
                 >
-                  Update today's log to reflect this →
+                  Update today&apos;s log to reflect this →
                 </Link>
               </div>
             </div>

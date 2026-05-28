@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Full-bleed saffron-tinted fill for maskable safe zone -->
+  <rect width="512" height="512" fill="#FFF9F0"/>
+  <!-- Subtle warm tone border strip -->
+  <rect width="512" height="512" fill="none" stroke="#E8913A" stroke-width="2" stroke-opacity="0.15"/>
+  <!-- OM — centred and scaled slightly smaller so it stays within the maskable safe zone (80%) -->
+  <text
+    x="256"
+    y="336"
+    text-anchor="middle"
+    font-family="'Noto Serif Devanagari', 'Noto Sans Devanagari', 'Mangal', serif"
+    font-size="240"
+    font-weight="500"
+    fill="#E8913A"
+  >ॐ</text>
+</svg>

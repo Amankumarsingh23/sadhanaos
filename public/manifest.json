@@ -1,0 +1,43 @@
+{
+  "name": "SadhanaOS",
+  "short_name": "SadhanaOS",
+  "description": "Your Digital Ashram — साधना toward self-realization",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#E8913A",
+  "background_color": "#FFF9F0",
+  "lang": "en",
+  "categories": ["health", "lifestyle", "spirituality"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Log Today",
+      "short_name": "Log",
+      "description": "Record today's sadhana",
+      "url": "/log",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Urge Shield",
+      "short_name": "Shield",
+      "description": "Activate urge resistance",
+      "url": "/urge-shield",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ]
+}

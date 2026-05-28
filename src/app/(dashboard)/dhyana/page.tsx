@@ -927,7 +927,7 @@ export default function DhyanaPage() {
                   <p className="font-devanagari text-xl text-indigo-deep font-semibold">सत्संग पूर्ण</p>
                   <p className="text-sm text-twilight">Session complete. {durationMin} minutes logged.</p>
                   <p className="text-xs text-twilight/60 italic">
-                    "The mind that is purified by meditation sees the Self clearly." — Gita 6.20
+                    &ldquo;The mind that is purified by meditation sees the Self clearly.&rdquo; — Gita 6.20
                   </p>
                   <Button variant="primary" size="md" onClick={handleDone} className="mt-2">
                     <RotateCcw size={14} /> New Session
@@ -951,10 +951,10 @@ export default function DhyanaPage() {
           >
             <div className="px-1 pb-1">
               <p className="text-sm text-twilight leading-relaxed">
-                "तस्मिन् सति श्वासप्रश्वासयोर्गतिविच्छेदः प्राणायामः।"
+                &ldquo;तस्मिन् सति श्वासप्रश्वासयोर्गतिविच्छेदः प्राणायामः।&rdquo;
               </p>
               <p className="text-xs text-twilight/60 italic mt-0.5">
-                "The regulation of breath is pranayama." — Yoga Sutras 2.49
+                &ldquo;The regulation of breath is pranayama.&rdquo; — Yoga Sutras 2.49
               </p>
             </div>
 

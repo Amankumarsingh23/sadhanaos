@@ -7,7 +7,7 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import { supabase } from '@/lib/supabase'
 import { ShlokCard } from '@/components/sacred/ShlokCard'
 import {
-  SCRIPTURE_KEYS, SCRIPTURE_META, getAllVerses, getScriptureMeta,
+  SCRIPTURE_KEYS, getAllVerses, getScriptureMeta,
   getShlokCardProps, getDailyShlokas,
   type ScriptureKey,
 } from '@/lib/scriptures'

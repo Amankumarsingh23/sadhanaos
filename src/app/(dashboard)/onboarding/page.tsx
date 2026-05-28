@@ -538,7 +538,7 @@ function StepPrarambha({ data, onBegin, onBack, loading }: { data: OnboardingDat
           🙏 साधना आरम्भ करें
         </Button>
         <p className="text-xs text-twilight text-center italic">
-          "उद्धरेदात्मनात्मानम्" — Let one lift oneself by oneself. — Gita 6.5
+          &ldquo;उद्धरेदात्मनात्मानम्&rdquo; — Let one lift oneself by oneself. — Gita 6.5
         </p>
       </div>
 

@@ -11,7 +11,7 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import { DiyaFlame } from '@/components/sacred/DiyaFlame'
 import { ProgressRing } from '@/components/ui/ProgressRing'
 import { ShlokCard } from '@/components/sacred/ShlokCard'
-import { Skeleton, SkeletonCard } from '@/components/ui/Skeleton'
+import { SkeletonCard } from '@/components/ui/Skeleton'
 import { Button } from '@/components/ui/Button'
 import { useDashboardData } from '@/hooks/useDashboardData'
 import type { DailyLogRow, PracticesConfig } from '@/hooks/useDashboardData'
@@ -225,7 +225,7 @@ function IntentionCard({
   return (
     <div className="rounded-card border border-sandstone bg-parchment shadow-warm-sm p-5">
       <p className="text-xs font-semibold text-twilight uppercase tracking-wider mb-3">
-        आज का संकल्प — Today's Intention
+        आज का संकल्प — Today&apos;s Intention
       </p>
 
       {editing ? (
@@ -283,7 +283,7 @@ function RitualsCard({
     <div className="rounded-card border border-sandstone bg-parchment shadow-warm-sm p-5">
       <div className="flex items-center justify-between mb-4">
         <p className="text-xs font-semibold text-twilight uppercase tracking-wider">
-          आज की दिनचर्या — Today's Rituals
+          आज की दिनचर्या — Today&apos;s Rituals
         </p>
         {allDone && (
           <motion.span
@@ -470,7 +470,7 @@ function WeekGridCard({
 }
 
 // ── 6. Mood Wave Card ─────────────────────────────────────────────────────
-function MoodWaveCard({ weekLogs, today }: { weekLogs: DailyLogRow[]; today: string }) {
+function MoodWaveCard({ weekLogs }: { weekLogs: DailyLogRow[] }) {
   const days = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(); d.setDate(d.getDate() - (6 - i))
     return d.toISOString().split('T')[0]
@@ -691,7 +691,7 @@ export default function DashboardPage() {
 
         <div>
           <p className="text-xs font-semibold text-twilight uppercase tracking-wider mb-3">
-            आज का श्लोक — Today's Shloka
+            आज का श्लोक — Today&apos;s Shloka
           </p>
           <ShlokDailyCard today={today} />
         </div>
@@ -702,7 +702,7 @@ export default function DashboardPage() {
         <SectionLabel hi="सप्ताह दृष्टि" en="Week View" />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <WeekGridCard weekLogs={weekLogs} practicesConfig={practicesConfig} today={today} />
-          <MoodWaveCard weekLogs={weekLogs} today={today} />
+          <MoodWaveCard weekLogs={weekLogs} />
         </div>
       </section>
 

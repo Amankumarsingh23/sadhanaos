@@ -29,10 +29,6 @@ type Json       = Database['public']['Tables']['daily_logs']['Row']['prayers_com
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function todayISO() {
-  return new Date().toISOString().slice(0, 10)
-}
-
 function cutoffDate(range: TimeRange): string {
   const days = range === '7D' ? 7 : range === '14D' ? 14 : range === '30D' ? 30 : 3650
   return new Date(Date.now() - days * 86400000).toISOString().slice(0, 10)

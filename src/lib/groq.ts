@@ -1,6 +1,11 @@
 import Groq from 'groq-sdk'
 
-export const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
+// Lazy-init so the SDK does not throw at build time when GROQ_API_KEY is absent
+let _groq: Groq | null = null
+export function groq(): Groq {
+  if (!_groq) _groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
+  return _groq
+}
 
 export const RISHI_MODEL = 'llama-3.3-70b-versatile'
 

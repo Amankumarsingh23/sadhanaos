@@ -11,8 +11,6 @@ export default function SignupPage() {
   const [name, setName]         = useState('')
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
-  const [confirmed, setConfirmed] = useState(false)
-
   useEffect(() => { clearError() }, [clearError])
 
   // '__EMAIL_CONFIRMATION__' sentinel → show a success notice instead of an error
@@ -24,7 +22,7 @@ export default function SignupPage() {
     signUp(name, email, password)
   }
 
-  if (showConfirmation || confirmed) {
+  if (showConfirmation) {
     return (
       <div className="rounded-card bg-parchment border border-sandstone shadow-sacred p-8 space-y-4 text-center">
         <div className="text-4xl">🕊</div>

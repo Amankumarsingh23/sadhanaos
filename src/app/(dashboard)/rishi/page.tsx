@@ -244,9 +244,6 @@ export default function RishiPage() {
         setLastUrgeData({ intensity: last.intensity, minutesAgo: minutesAgo(last.logged_at) })
       }
 
-      // Recent mood for emergency
-      const recentMood = moodVals.length > 0 ? moodVals[moodVals.length - 1] : null
-
       setPastReports(reports ?? [])
       setLoading(false)
     })()

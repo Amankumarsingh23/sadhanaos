@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const stream = await groq.chat.completions.create({
+    const stream = await groq().chat.completions.create({
       model:       RISHI_MODEL,
       messages,
       stream:      true as const,
