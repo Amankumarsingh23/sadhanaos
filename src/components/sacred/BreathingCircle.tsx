@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Play, Square } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-type PatternKey = '4-7-8' | 'box' | 'anulom-vilom'
+type PatternKey = '4-7-8' | 'box' | 'anulom-vilom' | 'bhramari'
 type PhaseName = 'inhale' | 'hold' | 'exhale' | 'hold2'
 
 interface Phase {
@@ -34,6 +34,13 @@ const PATTERNS: Record<PatternKey, { label: string; phases: Phase[] }> = {
       { name: 'hold2',  duration: 4, label: 'Hold',      labelHi: 'रोकें',   scale: 0.75 },
     ],
   },
+  bhramari: {
+    label: 'Bhramari (Humming Bee)',
+    phases: [
+      { name: 'inhale', duration: 4, label: 'Inhale',    labelHi: 'श्वास',     scale: 1.3  },
+      { name: 'exhale', duration: 8, label: 'Hum (ॐ)',   labelHi: 'ॐ ह्म्म्',  scale: 0.75 },
+    ],
+  },
   'anulom-vilom': {
     label: 'Anulom Vilom',
     phases: [
@@ -46,15 +53,18 @@ const PATTERNS: Record<PatternKey, { label: string; phases: Phase[] }> = {
 }
 
 interface BreathingCircleProps {
-  pattern?:   PatternKey
-  size?:      number
-  className?: string
-  autoStart?: boolean
+  pattern?:          PatternKey
+  size?:             number
+  className?:        string
+  autoStart?:        boolean
+  onCycleComplete?:  () => void
 }
 
-export function BreathingCircle({ pattern = '4-7-8', size = 200, className, autoStart = false }: BreathingCircleProps) {
+export function BreathingCircle({ pattern = '4-7-8', size = 200, className, autoStart = false, onCycleComplete }: BreathingCircleProps) {
   const config = PATTERNS[pattern]
   const [active, setActive] = useState(autoStart)
+  const onCycleRef = useRef(onCycleComplete)
+  useEffect(() => { onCycleRef.current = onCycleComplete }, [onCycleComplete])
   const [phaseIdx, setPhaseIdx] = useState(0)
   const [countdown, setCountdown] = useState(config.phases[0].duration)
   const [cycles, setCycles] = useState(0)
@@ -75,7 +85,7 @@ export function BreathingCircle({ pattern = '4-7-8', size = 200, className, auto
           clearTick()
           setPhaseIdx((i) => {
             const next = (i + 1) % config.phases.length
-            if (next === 0) setCycles((cy) => cy + 1)
+            if (next === 0) { setCycles((cy) => cy + 1); onCycleRef.current?.() }
             return next
           })
           return currentPhase.duration
