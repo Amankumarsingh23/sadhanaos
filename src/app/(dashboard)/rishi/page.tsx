@@ -1,12 +1,18 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, ChevronUp, Send, AlertTriangle, Sparkles } from 'lucide-react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { supabase } from '@/lib/supabase'
 import type { ProfileCtx, WeekCtx } from '@/lib/groq'
 import type { Database } from '@/types/database'
+
+const PDFDownloadButton = dynamic(
+  () => import('@/components/pdf/PDFDownloadButton'),
+  { ssr: false, loading: () => null }
+)
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -326,6 +332,15 @@ export default function RishiPage() {
     })
   }
 
+  // PDF helpers — computed once profile is loaded
+  const weekNumber = profile ? Math.ceil(Math.max(1, profile.currentDay) / 7) : 1
+  const dateRange  = useMemo(() => {
+    const end   = new Date()
+    const start = new Date(end.getTime() - 6 * 86400000)
+    const fmt   = (d: Date) => d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
+    return `${fmt(start)} – ${fmt(end)}`
+  }, [])
+
   const EXAMPLE_QUESTIONS = [
     'Why do I feel more urges on weekends?',
     'Which pranayama is best for my current state?',
@@ -434,7 +449,23 @@ export default function RishiPage() {
                     />
                   )}
                   {saved && !streaming && activeTitle === 'साप्ताहिक मार्गदर्शन' && (
-                    <p className="text-xs text-sage-green text-center">Saved to your report history ✓</p>
+                    <div className="space-y-3">
+                      <p className="text-xs text-sage-green text-center">Saved to your report history ✓</p>
+                      {weekCtx && streamText && (
+                        <div className="flex flex-col items-center gap-2">
+                          <p className="text-xs text-twilight/60 font-display italic">
+                            Your sacred letter is ready — download it as a royal PDF
+                          </p>
+                          <PDFDownloadButton
+                            profile={profile}
+                            week={weekCtx}
+                            reportText={streamText}
+                            weekNumber={weekNumber}
+                            dateRange={dateRange}
+                          />
+                        </div>
+                      )}
+                    </div>
                   )}
 
                   {/* Past reports */}
