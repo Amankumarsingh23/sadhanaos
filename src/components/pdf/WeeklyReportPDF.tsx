@@ -7,28 +7,26 @@ import {
 import type { WeekCtx, ProfileCtx } from '@/lib/groq'
 import { getTheme } from './themes'
 
-// ─── Font Registration (WOFF for broadest @react-pdf compatibility) ───────────
+// ─── Font Registration — served from /public/fonts/ (no CDN dependency) ─────
 
-Font.register({
-  family: 'Cinzel',
-  src: 'https://cdn.jsdelivr.net/npm/@fontsource/cinzel/files/cinzel-latin-400-normal.woff',
-})
+Font.register({ family: 'Cinzel', src: '/fonts/cinzel-400.woff' })
 
 Font.register({
   family: 'Cormorant',
   fonts: [
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-normal.woff' },
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-italic.woff', fontStyle: 'italic' },
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-600-normal.woff', fontWeight: 600 },
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-700-normal.woff', fontWeight: 700 },
+    { src: '/fonts/cormorant-400.woff' },
+    { src: '/fonts/cormorant-400i.woff', fontStyle: 'italic' },
+    { src: '/fonts/cormorant-600.woff',  fontWeight: 600 },
+    { src: '/fonts/cormorant-700.woff',  fontWeight: 700 },
   ],
 })
 
+// Noto Serif Devanagari has NO italic variant — never apply fontStyle:'italic' to it
 Font.register({
   family: 'Devanagari',
   fonts: [
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-devanagari/files/noto-serif-devanagari-devanagari-400-normal.woff' },
-    { src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-devanagari/files/noto-serif-devanagari-devanagari-600-normal.woff', fontWeight: 600 },
+    { src: '/fonts/devanagari-400.woff' },
+    { src: '/fonts/devanagari-600.woff', fontWeight: 600 },
   ],
 })
 
@@ -215,7 +213,7 @@ function CoverPage({ profile, week, weekNumber, dateRange }: Omit<WeeklyReportPD
         </Text>
 
         {/* Mantra */}
-        <Text style={{ fontFamily: 'Devanagari', fontSize: 10, color: theme.gold, opacity: 0.7, marginTop: 6, fontStyle: 'italic' }}>
+        <Text style={{ fontFamily: 'Devanagari', fontSize: 10, color: theme.gold, opacity: 0.7, marginTop: 6 }}>
           {theme.mantra}
         </Text>
 

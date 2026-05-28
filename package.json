@@ -6,9 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "node scripts/copy-pdf-fonts.mjs"
   },
   "dependencies": {
+    "@fontsource/cinzel": "^5.2.8",
+    "@fontsource/cormorant-garamond": "^5.2.11",
+    "@fontsource/noto-serif-devanagari": "^5.2.10",
     "@react-pdf/renderer": "^4.5.1",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.106.2",
