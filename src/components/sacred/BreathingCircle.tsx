@@ -46,14 +46,15 @@ const PATTERNS: Record<PatternKey, { label: string; phases: Phase[] }> = {
 }
 
 interface BreathingCircleProps {
-  pattern?: PatternKey
-  size?: number
+  pattern?:   PatternKey
+  size?:      number
   className?: string
+  autoStart?: boolean
 }
 
-export function BreathingCircle({ pattern = '4-7-8', size = 200, className }: BreathingCircleProps) {
+export function BreathingCircle({ pattern = '4-7-8', size = 200, className, autoStart = false }: BreathingCircleProps) {
   const config = PATTERNS[pattern]
-  const [active, setActive] = useState(false)
+  const [active, setActive] = useState(autoStart)
   const [phaseIdx, setPhaseIdx] = useState(0)
   const [countdown, setCountdown] = useState(config.phases[0].duration)
   const [cycles, setCycles] = useState(0)
