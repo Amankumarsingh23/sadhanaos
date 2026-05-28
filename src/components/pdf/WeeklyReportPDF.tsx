@@ -2,7 +2,7 @@
 
 import {
   Document, Page, Text, View, Font,
-  Svg, Rect, Circle, Polygon, Line,
+  Svg, Rect, Circle, Ellipse, Polygon, Line,
 } from '@react-pdf/renderer'
 import type { WeekCtx, ProfileCtx } from '@/lib/groq'
 import { getTheme } from './themes'
@@ -60,6 +60,18 @@ function makeWaxPoints(cx: number, cy: number, n = 24): string {
 
 function gradeColor(grade: string): string {
   return { A: '#6B9E78', B: '#E8913A', C: '#C4A842', D: '#D4708C', F: '#C45C5C' }[grade] ?? '#888'
+}
+
+// Strip markdown syntax Rishi embeds (**bold**, *italic*, # headings)
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\*\*\*(.*?)\*\*\*/g, '$1')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/^#{1,6}\s*/gm, '')
+    .replace(/^[-*•]\s+/gm, '')
+    .replace(/^\d+\.\s+/gm, '')
+    .trim()
 }
 
 // ─── Reusable SVG atoms ───────────────────────────────────────────────────────
@@ -166,6 +178,57 @@ function PracticeBar({ label, value, max = 7, gold, bg }: {
   )
 }
 
+// Lotus-yantra mandala for sacred decoration (fills empty space beautifully)
+function LotusMandala({ color, size = 160 }: { color: string; size?: number }) {
+  const c   = size / 2
+  const R   = size * 0.44  // outer ring
+  const MR  = size * 0.32  // mid ring
+  const IR  = size * 0.18  // inner ring
+  const N   = 8            // 8 petals
+
+  return (
+    <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      {/* Outer decorative ring */}
+      <Circle cx={c} cy={c} r={R}  fill="none" stroke={color} strokeWidth={0.6} strokeOpacity={0.35} strokeDasharray="2,4" />
+      {/* Mid ring */}
+      <Circle cx={c} cy={c} r={MR} fill="none" stroke={color} strokeWidth={0.5} strokeOpacity={0.45} />
+      {/* Inner ring */}
+      <Circle cx={c} cy={c} r={IR} fill={color} fillOpacity={0.08} stroke={color} strokeWidth={0.5} strokeOpacity={0.5} />
+      {/* 8 petals as ellipses rotated outward */}
+      {Array.from({ length: N }, (_, i) => {
+        const angle  = (i * Math.PI * 2) / N
+        const dist   = (MR + IR) / 2
+        const px     = c + dist * Math.cos(angle)
+        const py     = c + dist * Math.sin(angle)
+        const deg    = (i * 360) / N + 90
+        return (
+          <Ellipse key={i} cx={px} cy={py}
+            rx={size * 0.075} ry={size * 0.135}
+            fill={color} fillOpacity={0.12}
+            stroke={color} strokeWidth={0.5} strokeOpacity={0.5}
+            transform={`rotate(${deg} ${px} ${py})`}
+          />
+        )
+      })}
+      {/* 16-point starburst at outer ring */}
+      {Array.from({ length: 16 }, (_, i) => {
+        const angle = (i * Math.PI * 2) / 16
+        const inner = i % 2 === 0 ? MR * 1.02 : MR * 0.9
+        return (
+          <Line key={i}
+            x1={c + inner * Math.cos(angle)} y1={c + inner * Math.sin(angle)}
+            x2={c + R * 0.97 * Math.cos(angle)} y2={c + R * 0.97 * Math.sin(angle)}
+            stroke={color} strokeWidth={i % 2 === 0 ? 0.7 : 0.4} strokeOpacity={0.35}
+          />
+        )
+      })}
+      {/* Center dot */}
+      <Circle cx={c} cy={c} r={4} fill={color} fillOpacity={0.6} />
+      <Circle cx={c} cy={c} r={2} fill={color} fillOpacity={0.9} />
+    </Svg>
+  )
+}
+
 // ─── Props ────────────────────────────────────────────────────────────────────
 
 export interface WeeklyReportPDFProps {
@@ -197,18 +260,23 @@ function CoverPage({ profile, week, weekNumber, dateRange }: Omit<WeeklyReportPD
           </Svg>
         </View>
 
-        {/* Gold halo ring behind OM */}
-        <View style={{ position: 'relative', alignItems: 'center', marginBottom: 4 }}>
-          <Svg width={140} height={140} style={{ position: 'absolute', top: -16, left: -16 }}>
-            <Circle cx={70} cy={70} r={62} fill="none" stroke={theme.gold} strokeWidth={0.8} strokeDasharray="3,4" />
-            <Circle cx={70} cy={70} r={56} fill={theme.goldDark} fillOpacity={0.18} />
+        {/* Halo + OM — fixed 128×128 container, everything properly centred */}
+        <View style={{ width: 128, height: 128, position: 'relative', alignSelf: 'center', marginBottom: 10 }}>
+          <Svg width={128} height={128} viewBox="0 0 128 128">
+            {/* Outer dashed halo */}
+            <Circle cx={64} cy={64} r={62} fill="none" stroke={theme.gold} strokeWidth={0.9} strokeDasharray="3,5" strokeOpacity={0.7} />
+            {/* Filled inner glow */}
+            <Circle cx={64} cy={64} r={55} fill={theme.goldDark} fillOpacity={0.22} />
+            <Circle cx={64} cy={64} r={53} fill={theme.primary} fillOpacity={0.35} />
           </Svg>
-          {/* OM symbol */}
-          <Text style={{ fontFamily: 'Devanagari', fontSize: 82, color: theme.gold, lineHeight: 1.1 }}>ॐ</Text>
+          {/* OM centred over the SVG */}
+          <View style={{ position: 'absolute', top: 0, left: 0, width: 128, height: 128, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ fontFamily: 'Devanagari', fontSize: 76, color: theme.gold, lineHeight: 1 }}>ॐ</Text>
+          </View>
         </View>
 
-        {/* Deity name */}
-        <Text style={{ fontFamily: 'Devanagari', fontSize: 22, color: theme.goldLight, letterSpacing: 3, marginTop: 2 }}>
+        {/* Deity name — below the halo, no overlap */}
+        <Text style={{ fontFamily: 'Devanagari', fontSize: 22, color: theme.goldLight, letterSpacing: 3, textAlign: 'center', marginBottom: 2 }}>
           {theme.deityHi}
         </Text>
 
@@ -307,8 +375,8 @@ function ShlokaPage({ reportText, profile }: { reportText: string; profile: Prof
   const theme  = getTheme(profile.deity)
   const { block } = extractShloka(reportText)
 
-  // Split the shloka block into lines for styled rendering
-  const lines = block.split('\n').map(l => l.trim()).filter(Boolean)
+  // Strip markdown and split into lines for styled rendering
+  const lines = block.split('\n').map(l => stripMarkdown(l).trim()).filter(Boolean)
   const isDevanagari = (s: string) => /[ऀ-ॿ]/.test(s)
 
   return (
@@ -355,20 +423,28 @@ function ShlokaPage({ reportText, profile }: { reportText: string; profile: Prof
 
           <GoldDivider gold={theme.gold} width={440} />
 
-          {/* Spacer */}
-          <View style={{ flex: 1 }} />
+          {/* Lotus mandala — fills the page beautifully */}
+          <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 16 }}>
+            <LotusMandala color={theme.gold} size={170} />
+          </View>
 
-          {/* Decorative bottom section */}
-          <View style={{ alignItems: 'center', marginTop: 24 }}>
-            <Svg width={80} height={24}>
-              {/* Simplified lotus */}
-              <Circle cx={40} cy={12} r={5}  fill="none" stroke={theme.gold} strokeWidth={1} />
-              <Circle cx={24} cy={14} r={4}  fill="none" stroke={theme.gold} strokeWidth={0.7} />
-              <Circle cx={56} cy={14} r={4}  fill="none" stroke={theme.gold} strokeWidth={0.7} />
-              <Line x1={0} y1={20} x2={80} y2={20} stroke={theme.gold} strokeWidth={0.5} strokeDasharray="3,3" />
-            </Svg>
+          {/* Sacred contemplation section */}
+          <View style={{ paddingHorizontal: 30, marginBottom: 10 }}>
+            <Text style={{ fontFamily: 'Cinzel', fontSize: 7.5, color: '#aaa', letterSpacing: 3, textAlign: 'center', marginBottom: 10 }}>
+              SACRED CONTEMPLATION
+            </Text>
+            <Text style={{ fontFamily: 'Cormorant', fontSize: 12, color: '#555', textAlign: 'center', fontStyle: 'italic', lineHeight: 1.8 }}>
+              Sit with this verse. Close your eyes and breathe it in three times.{'\n'}
+              Let its meaning dissolve into your being — not as knowledge, but as lived truth.{'\n'}
+              Then open your eyes and ask: what must change in me today?
+            </Text>
+          </View>
 
-            <Text style={{ fontFamily: 'Devanagari', fontSize: 13, color: theme.gold, marginTop: 10, letterSpacing: 2 }}>
+          <GoldDivider gold={theme.gold} width={440} />
+
+          {/* Mantra at base */}
+          <View style={{ alignItems: 'center', marginTop: 12 }}>
+            <Text style={{ fontFamily: 'Devanagari', fontSize: 13, color: theme.gold, letterSpacing: 2 }}>
               {theme.mantra}
             </Text>
           </View>
@@ -464,19 +540,52 @@ function MirrorPage({ profile, week }: { profile: ProfileCtx; week: WeekCtx }) {
 
         <GoldDivider gold={theme.gold} width={500} />
 
-        {/* Urge insight */}
-        {week.urgeCount > 0 && (
-          <View style={{ flexDirection: 'row', marginTop: 10, padding: 12, backgroundColor: `${theme.goldDark}12`, borderLeftWidth: 2, borderLeftColor: theme.gold }}>
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontFamily: 'Cinzel', fontSize: 7.5, color: theme.goldDark, letterSpacing: 1.5, marginBottom: 4 }}>
-                URGE SHIELD REPORT
-              </Text>
-              <Text style={{ fontFamily: 'Cormorant', fontSize: 12, color: '#555', fontStyle: 'italic' }}>
-                {week.urgesResisted} of {week.urgeCount} urges resisted — {Math.round((week.urgesResisted / week.urgeCount) * 100)}% victory rate this week.
-              </Text>
-            </View>
+        {/* Urge shield — shown when logged, otherwise a teaching */}
+        {week.urgeCount > 0 ? (
+          <View style={{ marginTop: 10, padding: 12, backgroundColor: `${theme.goldDark}12`, borderLeftWidth: 2, borderLeftColor: theme.gold }}>
+            <Text style={{ fontFamily: 'Cinzel', fontSize: 7.5, color: theme.goldDark, letterSpacing: 1.5, marginBottom: 4 }}>
+              URGE SHIELD REPORT
+            </Text>
+            <Text style={{ fontFamily: 'Cormorant', fontSize: 12, color: '#555', fontStyle: 'italic' }}>
+              {week.urgesResisted} of {week.urgeCount} urges resisted — {Math.round((week.urgesResisted / week.urgeCount) * 100)}% hold rate this week.
+            </Text>
+          </View>
+        ) : (
+          <View style={{ marginTop: 10, padding: 12, backgroundColor: `${theme.primary}0A`, borderLeftWidth: 2, borderLeftColor: theme.primary }}>
+            <Text style={{ fontFamily: 'Cinzel', fontSize: 7.5, color: theme.primary, letterSpacing: 1.5, marginBottom: 4 }}>
+              URGE SHIELD
+            </Text>
+            <Text style={{ fontFamily: 'Cormorant', fontSize: 11.5, color: '#555', fontStyle: 'italic' }}>
+              No urges logged this week. Either an exceptionally pure period — or they weren&apos;t tracked. Log every urge, even the small ones. Awareness precedes mastery.
+            </Text>
           </View>
         )}
+
+        {/* Sacred teaching — fills the lower third of the page */}
+        <View style={{ marginTop: 18, padding: 16, backgroundColor: `${theme.goldDark}08`, borderWidth: 0.5, borderColor: theme.gold, borderRadius: 4 }}>
+          <Text style={{ fontFamily: 'Cinzel', fontSize: 7.5, color: '#aaa', letterSpacing: 3, marginBottom: 8, textAlign: 'center' }}>
+            WHAT THESE NUMBERS MEAN
+          </Text>
+          {[
+            { label: 'Streak', text: 'Each maintained day builds a new neural pathway. The science of brahmacharya is the science of redirected neuroplasticity.' },
+            { label: 'Meditation', text: 'Even 10 minutes daily rewires the prefrontal cortex — the seat of discipline. Consistency matters more than duration.' },
+            { label: 'Urge Shield', text: 'Every resisted urge strengthens the will. Every relapse is data, not defeat. The pattern across weeks is what matters.' },
+          ].map(({ label, text }) => (
+            <View key={label} style={{ flexDirection: 'row', marginBottom: 8 }}>
+              <View style={{ width: 6, height: 6, marginTop: 3, marginRight: 8 }}>
+                <Svg width={6} height={6} viewBox="0 0 6 6">
+                  <Polygon points="3,0 6,3 3,6 0,3" fill={theme.gold} />
+                </Svg>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontFamily: 'Cinzel', fontSize: 7.5, color: theme.dark, letterSpacing: 0.5, marginBottom: 2 }}>
+                  {label.toUpperCase()}
+                </Text>
+                <Text style={{ fontFamily: 'Cormorant', fontSize: 10.5, color: '#555', lineHeight: 1.65 }}>{text}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
       </View>
 
       <Text style={{ fontFamily: 'Cinzel', fontSize: 7, color: '#bbb', textAlign: 'center', paddingBottom: 12, letterSpacing: 2 }}>
@@ -492,7 +601,7 @@ function GuidancePage({ reportText, profile }: { reportText: string; profile: Pr
   const theme = getTheme(profile.deity)
   const { rest } = extractShloka(reportText)
 
-  const lines = rest.split('\n').map(l => l.trim()).filter(Boolean)
+  const lines = rest.split('\n').map(l => stripMarkdown(l).trim()).filter(Boolean)
   const isDevanagari = (s: string) => /[ऀ-ॿ]/.test(s)
   const isHeading    = (s: string) => s.endsWith(':') || (s === s.toUpperCase() && s.length < 60 && !isDevanagari(s))
 
