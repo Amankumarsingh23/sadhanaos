@@ -89,7 +89,7 @@ export function Header({ streak = 1, isActive = true, onMenuClick, className }: 
 
         {/* Log Today CTA */}
         <Link
-          href="/dashboard/sadhana"
+          href="/log"
           className="inline-flex items-center gap-1.5 h-8 px-3 rounded-card text-sm font-medium bg-sacred-saffron text-dawn-white hover:bg-saffron-light active:bg-saffron-deep transition-colors shadow-warm-sm"
         >
           <PlusCircle size={14} />
