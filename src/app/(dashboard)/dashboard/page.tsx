@@ -8,12 +8,14 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { GraceCard, shouldShowGrace } from '@/components/sacred/GraceCard'
 import { DiyaFlame } from '@/components/sacred/DiyaFlame'
 import { ProgressRing } from '@/components/ui/ProgressRing'
 import { ShlokCard } from '@/components/sacred/ShlokCard'
 import { SkeletonCard } from '@/components/ui/Skeleton'
 import { Button } from '@/components/ui/Button'
 import { useDashboardData } from '@/hooks/useDashboardData'
+import { supabase } from '@/lib/supabase'
 import type { DailyLogRow, PracticesConfig } from '@/hooks/useDashboardData'
 import gitaData from '@/data/bhagavad-gita.json'
 import affirmationsDefault from '@/data/affirmations-default.json'
@@ -597,7 +599,24 @@ export default function DashboardPage() {
     weeklyStats, updateTodayLog,
   } = useDashboardData()
 
-  const today = new Date().toISOString().split('T')[0]
+  const today     = new Date().toISOString().split('T')[0]
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0]
+
+  // ── Grace period detection ────────────────────────────────────────────────
+  const yesterdayLog      = weekLogs.find(l => l.log_date === yesterday)
+  const missedYesterday   = !loading && !!profile && (!yesterdayLog || !yesterdayLog.streak_maintained)
+  const [showGrace, setShowGrace] = useState(false)
+  const [graceUserId, setGraceUserId] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!missedYesterday) return
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user && shouldShowGrace(yesterday)) {
+        setGraceUserId(user.id)
+        setShowGrace(true)
+      }
+    })
+  }, [missedYesterday, yesterday])
 
   const handleRitualToggle = useCallback((key: RitualKey) => {
     if (!todayLog) return
@@ -653,6 +672,25 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
+
+      {/* ── GRACE PERIOD CARD — appears only when yesterday was missed ── */}
+      <AnimatePresence>
+        {showGrace && graceUserId && (
+          <motion.div
+            key="grace-card"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20, height: 0 }}
+          >
+            <GraceCard
+              userId={graceUserId}
+              yesterday={yesterday}
+              currentStreak={streak}
+              onResolved={() => setShowGrace(false)}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── TOP: आज का दिन ──────────────────────────────────────────────── */}
       <section className="space-y-4">
