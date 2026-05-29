@@ -127,6 +127,13 @@ export function ShellClient({ children }: ShellClientProps) {
     })
   }, [user])
 
+  // ── Register service worker (silent — no UI impact) ───────────────────────
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {/* non-critical */})
+    }
+  }, [])
+
   // ── Close sidebar on resize ────────────────────────────────────────────────
   useEffect(() => {
     function onResize() { if (window.innerWidth >= 768) setSidebarOpen(false) }

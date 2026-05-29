@@ -8,6 +8,7 @@ import {
   Minus, Plus, ChevronDown, Save,
 } from 'lucide-react'
 import { Card, CardHeader, CardContent } from '@/components/ui/Card'
+import { QuickLogCard } from '@/components/sacred/QuickLogCard'
 import { Button } from '@/components/ui/Button'
 import { Input, Textarea } from '@/components/ui/Input'
 import { Toaster } from '@/components/ui/Toast'
@@ -310,6 +311,7 @@ function Row({ icon, hi, en, right }: { icon: React.ReactNode; hi: string; en: s
 export default function LogPage() {
   const [selectedDate, setSelectedDate] = useState(todayISO)
   const [profile,      setProfile]      = useState<ProfileRow | null>(null)
+  const [userId,       setUserId]       = useState<string | null>(null)
   const [logId,        setLogId]        = useState<string | null>(null)
   const [form,         setForm]         = useState<LogForm>(() => logToForm(null))
   const [loggedDates,  setLoggedDates]  = useState<string[]>([])
@@ -317,6 +319,9 @@ export default function LogPage() {
   const [loadingLog,   setLoadingLog]   = useState(true)
   const [journalOpen,  setJournalOpen]  = useState(false)
   const [toasts, setToasts] = useState<{ id: string; message: string; type?: 'success' | 'error' }[]>([])
+  // Quick log state
+  const [quickMode,    setQuickMode]    = useState(() => !localStorage.getItem('sadhanaos_quicklog_seen'))
+  const [quickLogged,  setQuickLogged]  = useState(false)
 
   const dismissToast = useCallback((id: string) => setToasts(p => p.filter(t => t.id !== id)), [])
   const addToast     = useCallback((message: string, type: 'success' | 'error' = 'success') => {
@@ -332,6 +337,7 @@ export default function LogPage() {
     ;(async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
+      setUserId(user.id)
       const [profRes, logsRes] = await Promise.all([
         supabase.from('profiles').select('*').eq('id', user.id).maybeSingle(),
         supabase.from('daily_logs').select('log_date').eq('user_id', user.id),
@@ -410,10 +416,42 @@ export default function LogPage() {
     <div className="max-w-2xl mx-auto space-y-6 pb-28">
 
       {/* Page heading */}
-      <div>
-        <h1 className="font-devanagari font-display text-2xl font-semibold text-indigo-deep">दैनिक लेख</h1>
-        <p className="text-sm text-twilight mt-0.5">Daily Sacred Log</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="font-devanagari font-display text-2xl font-semibold text-indigo-deep">दैनिक लेख</h1>
+          <p className="text-sm text-twilight mt-0.5">Daily Sacred Log</p>
+        </div>
+        {/* Toggle between quick and full mode */}
+        {!quickLogged && (
+          <button
+            onClick={() => {
+              const next = !quickMode
+              setQuickMode(next)
+              if (!next) localStorage.setItem('sadhanaos_quicklog_seen', '1')
+            }}
+            className="shrink-0 flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border border-sandstone bg-parchment hover:border-sacred-saffron/50 transition-colors text-twilight"
+          >
+            {quickMode ? '📋 Full log' : '⚡ Quick log'}
+          </button>
+        )}
       </div>
+
+      {/* Quick log card — shown when in quick mode and viewing today */}
+      {quickMode && !quickLogged && userId && selectedDate === todayISO() && (
+        <QuickLogCard
+          userId={userId}
+          today={selectedDate}
+          onLogged={() => {
+            setQuickLogged(true)
+            localStorage.setItem('sadhanaos_quicklog_seen', '1')
+            setLoggedDates(prev => prev.includes(selectedDate) ? prev : [...prev, selectedDate])
+          }}
+          onExpand={() => {
+            setQuickMode(false)
+            localStorage.setItem('sadhanaos_quicklog_seen', '1')
+          }}
+        />
+      )}
 
       {/* Date selector */}
       <DateSelector

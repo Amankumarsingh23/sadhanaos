@@ -13,6 +13,7 @@ import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Modal } from '@/components/ui/Modal'
+import { PushPermissionCard } from '@/components/ui/PushPermissionCard'
 import type { Database } from '@/types/database'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -722,6 +723,9 @@ export default function SettingsPage() {
             </div>
           </div>
         </Section>
+
+        {/* ── Push Notifications ────────────────────────────────────────── */}
+        <PushPermissionCard />
 
         {/* ── 3. Reminder Times ─────────────────────────────────────────── */}
         <Section

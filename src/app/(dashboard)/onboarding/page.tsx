@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight, ChevronLeft, Check, Plus, X } from 'lucide-react'
@@ -465,7 +465,16 @@ function StepDinacharya({ data, onChange, onNext, onBack }: { data: OnboardingDa
           )
         })}
       </div>
-      <NavRow onBack={onBack} onNext={onNext} nextLabel="समीक्षा करें" />
+      <div className="space-y-2">
+        <NavRow onBack={onBack} onNext={onNext} nextLabel="समीक्षा करें" />
+        <button
+          type="button"
+          onClick={onNext}
+          className="w-full text-xs text-twilight/50 hover:text-twilight transition-colors py-1 text-center"
+        >
+          Skip — use defaults and continue →
+        </button>
+      </div>
     </div>
   )
 }
@@ -600,6 +609,25 @@ export default function OnboardingPage() {
 
   const patch = useCallback((p: Partial<OnboardingData>) => setData((d) => ({ ...d, ...p })), [])
 
+  // ── Auto-save: restore draft on mount, save on every change ──────────────
+  const DRAFT_KEY = 'sadhanaos_onboarding_draft'
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(DRAFT_KEY)
+      if (saved) {
+        const { data: d, step: s } = JSON.parse(saved)
+        if (d) setData(d)
+        if (typeof s === 'number' && s > 0 && s < 5) setStep(s)
+      }
+    } catch {}
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!data.name && !data.ishta_deity) return // don't save blank state
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ data, step })) } catch {}
+  }, [data, step])
+
   const go = (next: number) => {
     setDirection(next > step ? 1 : -1)
     setStep(next)
@@ -693,6 +721,7 @@ export default function OnboardingPage() {
         }))
       )
 
+      try { localStorage.removeItem('sadhanaos_onboarding_draft') } catch {}
       setShowOm(true)
       setTimeout(() => router.push('/dashboard'), 2400)
     } catch (err) {
@@ -723,6 +752,23 @@ export default function OnboardingPage() {
             />
           </div>
         </div>
+
+        {/* Resume banner — shown when returning to a draft */}
+        {step > 0 && (
+          <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-sacred-saffron/8 border border-sacred-saffron/25 text-xs">
+            <span className="text-sacred-saffron font-medium">📌 Resuming your setup from step {step + 1}/5</span>
+            <button
+              onClick={() => {
+                try { localStorage.removeItem('sadhanaos_onboarding_draft') } catch {}
+                setStep(0)
+                setData({ name: '', age: '', gender: '', ishta_deity: '', target_days: 60, sankalp_text: '', practices: DEFAULT_PRACTICES })
+              }}
+              className="text-twilight/60 hover:text-twilight transition-colors ml-2"
+            >
+              Start over
+            </button>
+          </div>
+        )}
 
         {/* Card */}
         <div className="rounded-card bg-parchment border border-sandstone shadow-warm-sm p-6 sm:p-8 min-h-[520px]">
