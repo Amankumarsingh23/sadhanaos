@@ -843,7 +843,7 @@ export default function LogPage() {
       )}
 
       {/* ── Sticky Save Bar ───────────────────────────────────────────────── */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 flex justify-center px-4 pb-6 pt-4 bg-gradient-to-t from-dawn-white via-dawn-white/90 to-transparent pointer-events-none">
+      <div className="fixed bottom-0 left-0 md:left-[260px] right-0 z-40 flex justify-center px-4 pb-6 pt-4 bg-gradient-to-t from-dawn-white via-dawn-white/90 to-transparent pointer-events-none">
         <div className="w-full max-w-2xl pointer-events-auto">
           <Button
             variant="sacred"
